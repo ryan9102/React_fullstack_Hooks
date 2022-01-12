@@ -21,8 +21,9 @@ const App = () => {
         </Route>
         <Redirect to="/" />
       </Switch>
-    </Router>
+    </Router> 
   );
 };
 
 export default App;
+ 
