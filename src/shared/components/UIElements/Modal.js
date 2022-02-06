@@ -33,6 +33,7 @@ export default function Modal(props) {
   return (
     <React.Fragment>
       {props.show && <Backdrop onClick={props.onCancel} />}
+      {/* {props.show ? <Backdrop onClick={props.onCancel}/> : null} */}
       <CSSTransition
         in={props.show}
         mountOnEnter
