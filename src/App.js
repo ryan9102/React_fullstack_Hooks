@@ -46,7 +46,7 @@ const App = () => {
     );
   } else {
     routes = (
-      //为什么这里从React.Fragment换成Switch就行了呢？
+      
       <Switch>
         <Route path="/" exact>
           <Users />
@@ -67,7 +67,9 @@ const App = () => {
     >
       <Router>
         <MainNavigation />
-        <main>{routes}</main>
+        <main>
+          <Switch>{routes}</Switch>
+        </main>
       </Router>
     </AuthContext.Provider>
   );
