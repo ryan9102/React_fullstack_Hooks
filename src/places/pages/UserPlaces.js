@@ -1,38 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import ErrorModal from "../../shared/components/UIElements/ErrorModal";
+import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import PlaceList from "../components/PlaceList";
 
-const DUMMY_PLACES = [
-  {
-    id: "p1",
-    title: "Empire State Building",
-    description: "One of the most famous sky scraper in the world!",
-    imageUrl:
-      "https://a.cdn-hotels.com/gdcs/production176/d304/45e7e95a-6f5d-4f19-9479-1d3ddfee7e99.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
-    address: "20 W 34th St, New York, NY 10001",
-    location: {
-      lat: 40.7484445,
-      lng: -73.9878531,
-    },
-    creator: "u1",
-  },
-  {
-    id: "p2",
-    title: "Belconnen Skate Park",
-    description: "Fantastic skatepark, good for beginners and skilled.",
-    imageUrl: "https://convic.com/wp-content/uploads/2016/05/1-6-842x545.jpg",
-    address: "Altitude, 77 Emu Bank, Belconnen ACT 2617",
-    location: {
-      lat: -35.239235,
-      lng: 149.0723921,
-    },
-    creator: "u2",
-  },
-];
-
 export default function UserPlaces() {
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [loadedUserPlaces, setLoadedUserPlaces] = useState();
   const userId = useParams().userId;
-  const loadedPlaces = DUMMY_PLACES.filter((place) => place.creator === userId);
-  return <PlaceList items={loadedPlaces} />;
+
+  useEffect(() => {
+    const fetchUserPlaces = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/places/user/${userId}`
+        );
+        setLoadedUserPlaces(responseData.places);
+      } catch (err) {}
+    };
+    fetchUserPlaces();
+  }, [sendRequest, userId]);
+
+  return (
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      {isLoading && (
+        <div className="center">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isLoading && loadedUserPlaces && <PlaceList items={loadedUserPlaces} />}
+    </React.Fragment>
+  );
 }
