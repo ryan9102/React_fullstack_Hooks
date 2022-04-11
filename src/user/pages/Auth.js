@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-
+import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 import Card from "../../shared/components/UIElements/Card";
 import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
@@ -40,6 +40,7 @@ const Auth = () => {
         {
           ...formState.inputs,
           name: undefined,
+          image: undefined,
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -51,6 +52,7 @@ const Auth = () => {
             value: "",
             isValid: false,
           },
+          image: { value: null, isValid: false },
         },
         false
       );
@@ -114,6 +116,9 @@ const Auth = () => {
               errorText="Please enter a name."
               onInput={inputHandler}
             />
+          )}
+          {!isLoginMode && (
+            <ImageUpload center id="image" onInput={inputHandler} />
           )}
           <Input
             element="input"
