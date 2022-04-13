@@ -23,9 +23,9 @@ export default function UserPlaces() {
   }, [sendRequest, userId]);
 
   const placeDeletedHandler = (deletedPlaceId) => {
-    setLoadedUserPlaces((prev) => {
-      prev.filter((place) => place.id !== deletedPlaceId);
-    });
+    setLoadedUserPlaces((prev) =>
+      prev.filter((place) => place.id !== deletedPlaceId)
+    );
   };
 
   return (
