@@ -1,17 +1,24 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Redirect,
   Switch,
 } from "react-router-dom";
-import Users from "./user/pages/Users";
-import NewPlace from "./places/pages/NewPlace";
-import UserPlaces from "./places/pages/UserPlaces";
-import UpdatePlace from "./places/pages/UpdatePlace";
+// import Users from "./user/pages/Users";
+// import NewPlace from "./places/pages/NewPlace";
+// import UserPlaces from "./places/pages/UserPlaces";
+// import UpdatePlace from "./places/pages/UpdatePlace";
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
-import Auth from "./user/pages/Auth";
+import LoadingSpinner from "./shared/components/UIElements/LoadingSpinner";
+// import Auth from "./user/pages/Auth";
 import { AuthContext } from "./shared/context/auth-context";
+
+const Users = React.lazy(() => import("./user/pages/Users"));
+const NewPlace = React.lazy(() => import("./places/pages/NewPlace"));
+const UserPlaces = React.lazy(() => import("./places/pages/UserPlaces"));
+const UpdatePlace = React.lazy(() => import("./places/pages/UpdatePlace"));
+const Auth = React.lazy(() => import("./user/pages/Auth"));
 
 let logoutTimer;
 
@@ -39,7 +46,7 @@ const App = () => {
   const Logout = useCallback(() => {
     setToken(null);
     setUserId(null);
-    setTokenExpirationDate(null)
+    setTokenExpirationDate(null);
     localStorage.removeItem("userData");
   }, []);
 
@@ -116,7 +123,17 @@ const App = () => {
       <Router>
         <MainNavigation />
         <main>
-          <Switch>{routes}</Switch>
+          <Switch>
+            <Suspense
+              fallback={
+                <div className="center">
+                  <LoadingSpinner />
+                </div>
+              }
+            >
+              {routes}
+            </Suspense>
+          </Switch>
         </main>
       </Router>
     </AuthContext.Provider>
