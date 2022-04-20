@@ -105,7 +105,12 @@ export default function PlaceItem(props) {
           {isLoading && <LoadingSpinner asOverlay />}
           <div className="place-item__image">
             <img
-              src={`${process.env.REACT_APP_ASSET_URL}/${props.image}`}
+              src={
+                props.image ===
+                "uploads/images/b43bc260-c098-11ec-87ff-a79ed0d341a8.jpeg"
+                  ? "https://images.unsplash.com/photo-1534507035278-5d44aaaffe3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2531&q=80"
+                  : `${process.env.REACT_APP_ASSET_URL}/${props.image}`
+              }
               alt={props.title}
             />
           </div>
